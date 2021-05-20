@@ -2,6 +2,7 @@ package com.server.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 功能描述：
@@ -11,10 +12,14 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class CommonException extends RuntimeException{
 
     private Integer code;
     private String message;
 
-
+   public CommonException(String message){
+       this.code = 500;
+       this.message = message;
+   }
 }

@@ -17,4 +17,7 @@ public interface UserService {
     String save(User user);
 
     User getUserById(String id);
+
+    String updateUserById(User user);
+
 }

@@ -38,4 +38,9 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @RequestMapping(value = "updateUserById")
+    public String updateUserById(@RequestBody User user){
+        return userService.updateUserById(user);
+    }
+
 }

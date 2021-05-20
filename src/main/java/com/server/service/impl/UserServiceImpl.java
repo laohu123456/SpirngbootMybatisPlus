@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
         try{
             result = (userMapper.insert(user) > 0 ? "插入数据成功" : "插入数据失败");
         }catch (Exception e){
-            throw new CommonException(500,e.getMessage());
+            throw new CommonException(e.getMessage());
         }
         return result;
     }
@@ -45,4 +45,19 @@ public class UserServiceImpl implements UserService {
     public User getUserById(String id) {
         return userMapper.selectById(id);
     }
+
+    @Transactional
+    @Override
+    public String updateUserById(User user) {
+        String result = null;
+        try {
+            result = userMapper.updateById(user) > 0 ? "修改成功" : "修改失败";
+        }catch (Exception e){
+            throw new CommonException(e.getMessage());
+        }
+        return result;
+    }
+
+
+
 }

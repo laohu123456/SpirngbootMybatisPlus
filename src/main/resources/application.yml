@@ -8,7 +8,22 @@ spring:
     username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    database: 0
+    host: 192.168.56.101
+    port: 6379
+    password: redis123
+    jedis:
+      pool:
+        max-active: 200
+        max-wait: -1
+        max-idle: 60
+        min-idle: 30
+    lettuce:
+      shutdown-timeout: 10000
 
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
