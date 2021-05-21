@@ -2,7 +2,9 @@ package com.server.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,9 @@ import javax.sql.DataSource;
  */
 @Configuration
 public class DruidConfig {
+
+    @Autowired
+    private Interceptor[] intercepts;
 
     @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
@@ -56,12 +61,17 @@ public class DruidConfig {
         return druidDataSource;
     }
 
+
     @Bean
     public SqlSessionFactory getConnect(@Qualifier("druidDataSource") DataSource druidDataSource) throws Exception {
         MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(druidDataSource);
+        sqlSessionFactoryBean.setPlugins(intercepts);
         return sqlSessionFactoryBean.getObject();
     }
+
+
+
 
 
 }

@@ -12,9 +12,9 @@ public enum OrderStatus {
      *   3 -> 支付超时,作废订单作废  TOVOID
       */
 
-    COMMIT(0,"提交订单"),
+    COMMIT(0,"提交订单,待结算"),
     COMPLETED(1,"结算完成"),
-    TOBESETTED(2,"待结算"),
+    //TOBESETTED(2,"待结算"),
     TOVOID(3,"支付超时,订单作废");
 
     private Integer code;

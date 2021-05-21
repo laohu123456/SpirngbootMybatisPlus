@@ -20,4 +20,5 @@ public class Utils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
         return simpleDateFormat.format(new Date());
     }
+
 }

@@ -21,6 +21,9 @@ public class OrderInfo implements Serializable {
     private String orderCreatetime;
     private String orderStatus;
 
+    @Version
+    private Integer version;
+
     public Long getOrderId() {
         return orderId;
     }
@@ -53,6 +56,15 @@ public class OrderInfo implements Serializable {
         this.orderStatus = orderStatus;
     }
 
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+
     @Override
     public String toString() {
         return "OrderInfo{" +
@@ -60,6 +72,7 @@ public class OrderInfo implements Serializable {
                 ", orderName='" + orderName + '\'' +
                 ", orderCreatetime='" + orderCreatetime + '\'' +
                 ", orderStatus='" + orderStatus + '\'' +
+                ", version=" + version +
                 '}';
     }
 }

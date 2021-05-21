@@ -2,8 +2,8 @@ package com.server.redis.listener;
 
 import com.server.common.Constant;
 import com.server.common.OrderStatus;
+import com.server.dao.OrderInfoMapper;
 import com.server.entity.OrderInfo;
-import com.server.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class RedisListener implements MessageListener {
 
     @Autowired
-    private OrderService orderService;
+    private OrderInfoMapper orderInfoMapper;
 
     @Override
     public void onMessage(Message message, byte[] bytes) {
@@ -27,10 +27,12 @@ public class RedisListener implements MessageListener {
     public void updateOrderStatus(String redisKey){
         if(redisKey != null && !redisKey.isEmpty()){
             String orderId = redisKey.replace(Constant.REDIS_ORDER_LISTENER_KEY_PERFIX, "");
-            OrderInfo orderInfo = new OrderInfo();
-            orderInfo.setOrderId(Long.valueOf(orderId));
-            orderInfo.setOrderStatus(String.valueOf(OrderStatus.TOVOID.getCode()));
-            orderService.update(orderInfo);
+            OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
+            if(orderInfo!= null && "0".equals(orderInfo.getOrderStatus())){
+                orderInfo.setOrderId(Long.valueOf(orderId));
+                orderInfo.setOrderStatus(String.valueOf(OrderStatus.TOVOID.getCode()));
+                orderInfoMapper.updateById(orderInfo);
+            }
         }
     }
 
