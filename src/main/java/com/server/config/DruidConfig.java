@@ -71,6 +71,11 @@ public class DruidConfig {
     }
 
 
+    /*@Bean
+    public PlatformTransactionManager annotationDrivenTransactionManager() {
+        return new DataSourceTransactionManager(druidDataSource());
+    }*/
+
 
 
 
