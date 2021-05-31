@@ -22,18 +22,21 @@ import java.lang.reflect.Method;
 @Component
 public class LogMethodRecordImpl {
 
-    private StopWatch stopWatch = new StopWatch();
+    private static ThreadLocal<StopWatch> threadLocal = new ThreadLocal<>();
 
     @Pointcut("@annotation(com.server.annotation.LogMethodRecord)")
     public void countTimeImpl(){}
 
     @Before("countTimeImpl()")
     public void before(){
+        StopWatch stopWatch = new StopWatch();
         stopWatch.start();
+        threadLocal.set(stopWatch);
     }
 
     @After("countTimeImpl()")
     public void after(JoinPoint joinPoint){
+        StopWatch stopWatch = threadLocal.get();
         stopWatch.stop();
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
@@ -55,6 +58,7 @@ public class LogMethodRecordImpl {
         logMethod.setSystemName(type);
         logMethod.setRemark(null);
         sendMessage(logMethod);
+        threadLocal.remove();
     }
 
     private void sendMessage(LogMethod logMethod){

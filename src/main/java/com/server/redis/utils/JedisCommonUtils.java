@@ -34,7 +34,7 @@ public class JedisCommonUtils {
     private RedisTemplate redisTemplate;
 
     @Transactional
-    @LogMethodRecord(value = "redis监听器,监听过期键值", uri = "")
+    @LogMethodRecord(value = "redis监听器,监听过期键值,修改订单状态", uri = "")
     public void updateOrderStatus(String redisKey) {
         if(Utils.ifNull(redisKey)){
             String orderId = RedisUtils.splitSuffix(redisKey);
@@ -47,6 +47,7 @@ public class JedisCommonUtils {
         }
     }
 
+    @LogMethodRecord(value = "redis监听器,监听过期键值,发送websocket消息", uri = "")
     public void sendWebSocketMessage(String redisKey){
         if(Utils.ifNull(redisKey)){
             String redisKeyBak = redisKey + Constant.REDIS_KEY_KEY;
@@ -58,7 +59,7 @@ public class JedisCommonUtils {
                     Map<String, String> map  = new HashMap<>();
                     map.put(Constant.SESSION_KEY_MESSAGE,"这里是一个webSocket推送的消息" + split[2]);
                     map.put(Constant.SESSION_KEY_SESSIONID, split[2]);
-                    HttpClientUtils.post_init(split[0], Integer.valueOf(split[1]), "/other/sendMessage" ,map);
+                    HttpClientUtils.post_init(split[0], Integer.valueOf(split[1]), "/SpirngbootMybatisPlus/other/sendMessage" ,map);
                 }
             }
             redisTemplate.delete(redisKeyBak);
