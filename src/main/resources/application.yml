@@ -26,4 +26,11 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+websocket:
+  server-ip: 192.168.56.1
+  server-port: 9001
+
+
+
+
 

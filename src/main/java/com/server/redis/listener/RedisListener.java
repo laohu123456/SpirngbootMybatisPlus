@@ -1,6 +1,8 @@
 package com.server.redis.listener;
 
+import com.server.common.Constant;
 import com.server.redis.utils.JedisCommonUtils;
+import com.server.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -18,8 +20,30 @@ public class RedisListener implements MessageListener {
     }
 
     public void message(Message message, byte[] bytes){
-        jedisCommonUtils.updateOrderStatus(new String(message.getBody()));
+        String channelName = new String(bytes);
+        if(Constant.REDIS_KEY_EVENT_EXPIRE.equals(channelName)){
+            String redisExpireKey = new String(message.getBody());
+            match(redisExpireKey);
+        }
     }
+
+    public void match(String redisKey){
+        String splitStr = RedisUtils.splitPrefix(redisKey);
+        switch (splitStr){
+            case Constant.REDIS_ORDER_LISTENER_KEY_PREFIX:
+                jedisCommonUtils.updateOrderStatus(redisKey);
+                break;
+
+            case Constant.REDIS_SESSION_KEY_PREFIX:
+                jedisCommonUtils.sendWebSocketMessage(redisKey);
+                break;
+
+            default:
+                System.out.println("NOT MATCH");
+                break;
+        }
+    }
+
 
     /**
      * 在编写此功能时遇到@Transactional不生效问题
@@ -49,7 +73,6 @@ public class RedisListener implements MessageListener {
      *      Springmvc配置文件的时候把service也加载了，但是此时事务还没加载，将会导致事务无法成功生效
      *
      */
-
 
 
 

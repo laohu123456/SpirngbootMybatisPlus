@@ -61,7 +61,8 @@ public class LogMethodRecordImpl {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String str = objectMapper.writeValueAsString(logMethod);
-            HttpClientUtils.post_init("192.168.56.113", 8080, "/springbootelstaicsearch/logMethod/save", "logmethodStr", str);
+           // HttpClientUtils.post_init("192.168.56.113", 8080, "/springbootelstaicsearch/logMethod/save", "logmethodStr", str);
+            HttpClientUtils.post_init("192.168.56.113", 8080, "/provider/provider/sendEsStr", "str", str);
         } catch (JsonProcessingException e) {
             throw new CommonException("JSON发送失败   " + e.getMessage());
         }

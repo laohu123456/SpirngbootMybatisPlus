@@ -7,6 +7,7 @@ import com.server.entity.CommonException;
 import com.server.entity.OrderInfo;
 import com.server.entity.ResponseMessage;
 import com.server.service.OrderService;
+import com.server.utils.RedisUtils;
 import com.server.utils.SnowFlake;
 import com.server.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
             orderInfo.setOrderCreatetime(Utils.getCurrentDate());
             orderInfo.setOrderStatus(String.valueOf(OrderStatus.COMMIT.getCode()));
             int insert = orderInfoMapper.insert(orderInfo);
-            String redisKey = Constant.REDIS_ORDER_LISTENER_KEY_PERFIX + String.valueOf(snowId);
+            String redisKey = RedisUtils.getRedisKey(Constant.REDIS_ORDER_LISTENER_KEY_PREFIX, String.valueOf(snowId));
             redisTemplate.opsForValue().set(redisKey, "");
             redisTemplate.expire(redisKey, Constant.REDIS_ORDER_LISTENER_KEY_EXPIRE, TimeUnit.SECONDS);
             String message = insert > 0 ? "订单提交成功" : "订单提交失败";

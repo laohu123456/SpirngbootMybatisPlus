@@ -1,5 +1,7 @@
 package com.server.utils;
 
+import com.server.common.Constant;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -19,6 +21,14 @@ public class Utils {
     public static String getCurrentDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
         return simpleDateFormat.format(new Date());
+    }
+
+    public static String[] split(String redisKey){
+        return redisKey.split(Constant.REDIS_SPLIT_KEY, 3);
+    }
+
+    public static boolean ifNull(String str){
+        return str != null && !str.isEmpty();
     }
 
 }

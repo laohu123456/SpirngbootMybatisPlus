@@ -6,9 +6,19 @@ import com.server.common.OrderStatus;
 import com.server.dao.OrderInfoMapper;
 import com.server.entity.OrderInfo;
 import com.server.service.OrderService;
+import com.server.utils.HttpClientUtils;
+import com.server.utils.RedisUtils;
+import com.server.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 public class JedisCommonUtils {
@@ -19,11 +29,15 @@ public class JedisCommonUtils {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    @Qualifier("redisTemplateSer")
+    private RedisTemplate redisTemplate;
+
     @Transactional
     @LogMethodRecord(value = "redis监听器,监听过期键值", uri = "")
     public void updateOrderStatus(String redisKey) {
-        if(redisKey != null && !redisKey.isEmpty()){
-            String orderId = redisKey.replace(Constant.REDIS_ORDER_LISTENER_KEY_PERFIX, "");
+        if(Utils.ifNull(redisKey)){
+            String orderId = RedisUtils.splitSuffix(redisKey);
             OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
             if(orderInfo!= null && "0".equals(orderInfo.getOrderStatus())){
                 orderInfo.setOrderId(Long.valueOf(orderId));
@@ -32,6 +46,25 @@ public class JedisCommonUtils {
             }
         }
     }
+
+    public void sendWebSocketMessage(String redisKey){
+        if(Utils.ifNull(redisKey)){
+            String redisKeyBak = redisKey + Constant.REDIS_KEY_KEY;
+            Set<String> range = redisTemplate.opsForZSet().range(redisKeyBak, 0, -1);
+            System.out.println(range);
+            if(!CollectionUtils.isEmpty(range)){
+                for (String str : range) {
+                    String[] split = Utils.split(str);
+                    Map<String, String> map  = new HashMap<>();
+                    map.put(Constant.SESSION_KEY_MESSAGE,"这里是一个webSocket推送的消息" + split[2]);
+                    map.put(Constant.SESSION_KEY_SESSIONID, split[2]);
+                    HttpClientUtils.post_init(split[0], Integer.valueOf(split[1]), "/other/sendMessage" ,map);
+                }
+            }
+            redisTemplate.delete(redisKeyBak);
+       }
+    }
+
 
 
 
