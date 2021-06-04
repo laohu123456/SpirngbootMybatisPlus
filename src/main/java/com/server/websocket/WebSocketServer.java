@@ -19,8 +19,8 @@ public class WebSocketServer {
      *         listen     10010;
      *         server_name  www.linuxa-nginx.com;
      *         location / {
-     *                 proxy_pass http://192.168.56.113:8080;
-     *        		proxy_redirect off;
+     *          proxy_pass http://192.168.56.113:8080;
+     *        	proxy_redirect off;
      * 	    	proxy_http_version 1.1;
      * 	    	proxy_set_header Upgrade $http_upgrade;
      * 	    	proxy_set_header Connection "upgrade";
@@ -38,7 +38,6 @@ public class WebSocketServer {
 
     @OnOpen
     public void open(Session session){
-        System.out.println(session.getId());
         this.session = session;
         webSocketUtils.add(session.getId(), session);
     }

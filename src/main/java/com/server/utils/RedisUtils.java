@@ -37,7 +37,7 @@ public class RedisUtils {
     }
 
     public static String getRedisSessionKeyBak(String reidsKey){
-        return reidsKey + Constant.REDIS_KEY_KEY;
+        return reidsKey + Constant.REDIS_KEY_BAK;
     }
 
 

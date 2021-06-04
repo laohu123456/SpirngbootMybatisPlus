@@ -18,6 +18,8 @@ public interface Constant {
 
     public final static String SESSION_KEY_SESSIONID = "sessionId";
 
-    public final static String REDIS_KEY_KEY = "_bak";
+    public final static String REDIS_KEY_BAK = "_bak";
+
+    public final static String REDIS_KEY_REPORT_NEWS = "redis:key:report:news";
 
 }

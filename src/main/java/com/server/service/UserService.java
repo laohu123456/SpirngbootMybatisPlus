@@ -20,4 +20,5 @@ public interface UserService {
 
     String updateUserById(User user);
 
+    void testMybatisInterceptor();
 }

@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 /**
  * 功能描述：
@@ -29,10 +30,10 @@ public class Application extends SpringBootServletInitializer {
         return new OptimisticLockerInterceptor();
     }
 
-    /*@Bean
+    @Bean
     public ServerEndpointExporter serverEndpointExporter(){
       return new ServerEndpointExporter();
-    }*/
+    }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

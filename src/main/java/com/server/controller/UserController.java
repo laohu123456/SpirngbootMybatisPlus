@@ -48,4 +48,9 @@ public class UserController {
         return userService.updateUserById(user);
     }
 
+
+    @RequestMapping(value = "testMybatisInterceptor")
+    public void testMybatisInterceptor(){
+        userService.testMybatisInterceptor();
+    }
 }

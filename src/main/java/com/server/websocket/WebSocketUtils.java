@@ -42,7 +42,7 @@ public class WebSocketUtils {
 
     public void add(String sessionId, Session session){
         map.put(sessionId, session);
-        redisTemplate.opsForZSet().add(redisSessionKey + Constant.REDIS_KEY_KEY, combinationRedisSessionValue(sessionId), createDoubleNumber());
+        redisTemplate.opsForZSet().add(redisSessionKey, combinationRedisSessionValue(sessionId), createDoubleNumber());
     }
 
 
@@ -53,7 +53,7 @@ public class WebSocketUtils {
 
     public void remove(String sessionId){
         map.remove(sessionId);
-        redisTemplate.opsForZSet().remove(redisSessionKey + Constant.REDIS_KEY_KEY, combinationRedisSessionValue(sessionId));
+        redisTemplate.opsForZSet().remove(redisSessionKey, combinationRedisSessionValue(sessionId));
     }
 
     public Session get(String sessionId){

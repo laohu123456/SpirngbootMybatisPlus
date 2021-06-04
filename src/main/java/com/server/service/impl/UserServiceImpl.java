@@ -4,6 +4,7 @@ import com.server.dao.UserMapper;
 import com.server.entity.CommonException;
 import com.server.entity.User;
 import com.server.service.UserService;
+import com.server.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,22 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Transactional
+    @Override
+    public void testMybatisInterceptor() {
+        String uuid = Utils.getUUID();
+        User user = new User();
+        user.setUserid(uuid);
+        user.setUsername("aaaaaaasasasasasa");
+        user.setPassword("sdfjldjfs;ld");
+        user.setEmail("sadkljaklsjdksaljdkl");
+        userMapper.insert(user);
 
+        User user1 = userMapper.selectById(uuid);
 
+        user1.setEmail("dshfkdhljgfdl");
+
+        userMapper.updateById(user1);
+        userMapper.deleteById(uuid);
+    }
 }

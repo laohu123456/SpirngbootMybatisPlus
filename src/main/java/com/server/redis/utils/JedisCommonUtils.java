@@ -50,7 +50,7 @@ public class JedisCommonUtils {
     @LogMethodRecord(value = "redis监听器,监听过期键值,发送websocket消息", uri = "")
     public void sendWebSocketMessage(String redisKey){
         if(Utils.ifNull(redisKey)){
-            String redisKeyBak = redisKey + Constant.REDIS_KEY_KEY;
+            String redisKeyBak = redisKey + Constant.REDIS_KEY_BAK;
             Set<String> range = redisTemplate.opsForZSet().range(redisKeyBak, 0, -1);
             System.out.println(range);
             if(!CollectionUtils.isEmpty(range)){
