@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component(value = "firstJob")
+@Component
 public class FirstJob implements Job {
 
     @Autowired

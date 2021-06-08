@@ -11,20 +11,26 @@ public class JobBudilerUtils {
     @Autowired
     private Scheduler scheduler;
 
-    @Bean
-    public void main() throws SchedulerException {
+   @Bean
+    public void start() throws SchedulerException {
         JobDetail jobDetail = JobBuilder
                 .newJob(FirstJob.class)
-                .withIdentity("my job", "group1")
+                .withIdentity("my job", "first job")
                 .build();
 
+        String triggerName = "TriggerName001";
         Trigger cronTrigger = TriggerBuilder
                 .newTrigger()
-                .withIdentity("my trigger", "group1")
-                .withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(5))
+                .withIdentity("my trigger", "first Trigger")
+                .withIdentity(new TriggerKey(triggerName))
+                .withSchedule(CronScheduleBuilder.cronSchedule("0/20 * * * * ?"))
                 .build();
 
-        scheduler.start();
-        scheduler.scheduleJob(jobDetail, cronTrigger);
+       boolean exists = scheduler.checkExists(new TriggerKey(triggerName));
+       if(!exists){
+           scheduler.scheduleJob(jobDetail, cronTrigger);
+       }
+       //nohup java -jar hyqeureka.jar > eureka.txt 2>&1 &
+       scheduler.start();
     }
 }
